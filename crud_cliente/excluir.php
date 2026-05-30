@@ -1,0 +1,15 @@
+<?php
+require "../conexao.php";
+
+$id_cliente = $_GET['id_cliente'] ?? null;
+
+if ($id_cliente) {
+    $stmt = $conexao->prepare("DELETE FROM tabela_clientes WHERE id_cliente = :id_cliente");
+    $stmt->execute([
+        ':id_cliente' => $id_cliente
+    ]);
+}
+
+header("Location: index.php");
+exit;
+?>
