@@ -3,37 +3,39 @@ session_start();
 require "conexao.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
     $email = trim($_POST["email"]);
     $senha = trim($_POST["senha"]);
 
-    
-    $stmt = $conexao->prepare("SELECT * FROM tabela_login WHERE email = :email");
+    // Criptografa a senha
+    $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
+
+    $stmt = $conexao->prepare("
+        INSERT INTO tabela_login (email, senha)
+        VALUES (:email, :senha)
+    ");
+
     $stmt->bindValue(':email', $email);
-    $stmt->execute();
+    $stmt->bindValue(':senha', $senhaHash);
 
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    if ($stmt->execute()) {
+       
+        $_SESSION['sucesso'] = "Cadastro realizado com sucesso! Faça login.";
 
-
-    if($user && password_verify($senha, $user['senha'])){
-
-     $_SESSION["email"] = $user["email"];
-
-        header("Location: index.php");
+        header("Location: login.php");
         exit;
-
     } else {
-        $erro = "Email ou senha incorretos.";
+       $erro = "Erro ao cadastrar.";
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="pt-br">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login do Sistema</title>
+    <title>Cadastro do Sistema</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/feather-icons"></script>
 </head>
@@ -52,7 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     Bem-vindo ao ViagemTech
                 </h1>
                 <p class="text-xl mt-2">
-                    Faça login para acessar o sistema de viagens
+                    Faça seu cadastro para acessar o sistema de viagens
                 </p>
             </div>
         </div>
@@ -63,21 +65,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <h2 class="text-4xl font-bold text-slate-700">Viagem<span class="text-amber-500">Tech</span></h2>
                     <p class="text-gray-500 text-amber-500 mt-2">Sistema de viagens</p>
                     <br>
-                    <p class="text-lg font-semibold text-amber-500">Faça login para continuar</p>
+                    <p class="text-lg font-semibold text-amber-500">Faça seu cadastro para continuar</p>
                 </div>
 
-                <?php if (isset($_SESSION['sucesso'])) : ?>
-                <div class="bg-green-100 text-green-700 border border-green-300 rounded-lg p-3 mb-4">
-                    <?php
-                    echo $_SESSION['sucesso'];
-                    unset($_SESSION['sucesso']);
-                    ?>
-                </div>
-                <?php endif; ?>
 
-                <!-- Erro PHP -->
+                <!-- Mensagem de erro -->
                 <?php if (!empty($erro)) : ?>
-                <div class="bg-amber-100 text-amber-600 border border-amber-300 rounded-lg p-3 mb-4">
+                <div class="bg-red-100 text-red-700 border border-red-300 rounded-lg p-3 mb-4">
                     <?php echo $erro; ?>
                 </div>
                 <?php endif; ?>
@@ -99,17 +93,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             class="w-full border border-slate-300 rounded-xl px-4 py-4 focus:outline-none focus:ring-2 focus:ring-amber-500">
                     </div>
 
-                    <!-- Link de cadastro -->
+                    <!-- Link de login -->
                     <div class="text-center">
-                        <a href="cadastro.php" class="text-amber-500 hover:underline">
-                            Não tem uma conta? Cadastre-se
+                        <a href="login.php" class="text-amber-500 hover:underline">
+                            Já tem uma conta? Faça login
                         </a>
                     </div>
-
                     <!-- Botão -->
                     <button type="submit"
                         class=" pt-3 w-full bg-amber-500 hover:bg-amber-600 margin-top text-white py-4 rounded-xl font-medium text-lg transition">
-                        Enter
+                        Cadastrar
                     </button>
 
                 </form>

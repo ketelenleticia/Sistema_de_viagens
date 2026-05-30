@@ -62,15 +62,15 @@ $pacotes = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     </a>
 
                 </nav>
-                
+
             </div>
             <!-- Logout -->
-                <div class="p-6 bg-amber-500">
-                    <a href="../logout.php" class="flex items-center text-white hover:text-amber-600">
-                        <i data-feather="log-out" class="w-5 h-5 mr-2"></i>
-                        Sair
-                    </a>
-                </div>
+            <div class="p-6 bg-amber-500">
+                <a href="../logout.php" class="flex items-center text-white hover:text-amber-600">
+                    <i data-feather="log-out" class="w-5 h-5 mr-2"></i>
+                    Sair
+                </a>
+            </div>
 
         </aside>
 
