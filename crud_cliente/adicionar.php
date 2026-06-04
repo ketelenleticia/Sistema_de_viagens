@@ -20,7 +20,7 @@
         </div>
 
         <!-- Formulário -->
-        <form action="/sistema_viagens/crud_cliente/processo.php" method="post" class="space-y-6">
+        <form action="processo.php" method="post" class="space-y-6">
 
             <!-- Nome -->
             <div>

@@ -175,7 +175,7 @@ $ultimasReservas = $conexao->query("
 
             <div class="flex gap-14">
                 <!-- Últimas Reservas -->
-                <div class="bg-white rounded-2xl shadow-sm overflow-hidden w-[700px]">
+                <div class="bg-white rounded-2xl shadow-sm overflow-hidden w-[1200px]">
 
                     <div class="p-6 border-b bg-blue-950 flex justify-between items-center">
                         <h3 class="text-2xl text-white font-bold">Últimas Reservas</h3>
@@ -243,52 +243,7 @@ $ultimasReservas = $conexao->query("
                     </div>
 
                 </div>
-                <!-- Pacotes -->
-                <div class="bg-white rounded-2xl shadow-sm overflow-hidden w-[460px]">
 
-                    <div class="p-5 border-b bg-blue-950">
-                        <h3 class="text-2xl text-white font-bold">Pacotes</h3>
-                    </div>
-
-                    <table class="w-[460px] border-collapse">
-                        <thead class="bg-gray-50">
-                            <tr>
-                                <th class="w-30 p-2 pl-4 text-left">Imagem</th>
-                                <th class="p-2 text-left">Destino</th>
-                                <th class="p-2 text-left">Preço</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            <?php
-                            $sql = "SELECT imagem, destino, preco
-                            FROM tabela_pacotes
-                            ORDER BY id_pacote DESC
-                            LIMIT 4";
-
-                            $stmt = $conexao->query($sql);
-
-                            while ($dado = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                            ?>
-                            <tr class="border-b hover:bg-gray-50">
-                                <td class="p-2 pl-4">
-                                    <img src="assets/<?= $dado['imagem'] ?>" class="w-24 h-16 object-cover rounded-lg">
-                                </td>
-
-                                <td class="p-2">
-                                    <?= $dado['destino'] ?>
-                                </td>
-
-                                <td class="p-2">
-                                    R$ <?= number_format($dado['preco'], 2, ',', '.') ?>
-                                </td>
-                            </tr>
-                            <?php } ?>
-                        </tbody>
-
-                    </table>
-
-                </div>
             </div>
         </main>
 

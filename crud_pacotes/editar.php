@@ -7,8 +7,8 @@ if (!$id_pacote) {
     die("ID inválido");
 }
 
-// buscar
-$stmt = $conexao->prepare("SELECT * FROM tabela_pacotes WHERE id_pacote= :id_pacote");
+// buscar pacote
+$stmt = $conexao->prepare("SELECT * FROM tabela_pacotes WHERE id_pacote = :id_pacote");
 $stmt->execute([':id_pacote' => $id_pacote]);
 $dado = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -16,26 +16,49 @@ if (!$dado) {
     die("Registro não encontrado");
 }
 
+// imagem antiga
+$imagem = $dado['imagem'];
+
 // atualizar
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    $stmt = $conexao->prepare("UPDATE tabela_pacotes SET destino = :destino, imagem = :imagem, descricao = :descricao, preco = :preco, duracao = :duracao, data_saida = :data_saida WHERE id_pacote = :id_pacote");
+    // se enviou nova imagem
+    if (!empty($_FILES['imagem']['name'])) {
+
+        $imagem = $_FILES['imagem']['name'];
+
+        move_uploaded_file(
+            $_FILES['imagem']['tmp_name'],
+            "../assets/" . $imagem
+        );
+    }
+
+    $stmt = $conexao->prepare("
+        UPDATE tabela_pacotes 
+        SET destino = :destino,
+            imagem = :imagem,
+            descricao = :descricao,
+            preco = :preco,
+            duracao = :duracao,
+            data_saida = :data_saida
+        WHERE id_pacote = :id_pacote
+    ");
 
     $stmt->execute([
         ':destino' => $_POST['destino'],
-        ':imagem' => $_POST['imagem'],
+        ':imagem' => $imagem,
         ':descricao' => $_POST['descricao'],
         ':preco' => $_POST['preco'],
         ':duracao' => $_POST['duracao'],
         ':data_saida' => $_POST['data_saida'],
-         ':id_pacote' => $id_pacote
-         
+        ':id_pacote' => $id_pacote
     ]);
 
     header("Location: index.php");
     exit;
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -116,7 +139,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <!-- Formulário -->
         <div class="bg-white rounded-2xl shadow-sm p-8 max-w-6xl">
 
-            <form method="POST" class="space-y-6">
+            <form method="POST" enctype="multipart/form-data" class="space-y-6">
 
                 <!-- Destino -->
                 <div>

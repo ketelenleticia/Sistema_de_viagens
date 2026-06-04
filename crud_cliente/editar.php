@@ -17,9 +17,11 @@ if (!$dado) {
 }
 
 // atualizar
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
-    $stmt = $conexao->prepare("UPDATE tabela_clientes SET nome = :nome, cpf = :cpf, email = :email, telefone = :telefone WHERE id_cliente = :id_cliente");
+    $stmt = $conexao->prepare("UPDATE tabela_clientes  SET nome = :nome, cpf = :cpf, email = :email, telefone = :telefone 
+        WHERE id_cliente = :id_cliente
+    ");
 
     $stmt->execute([
         ':nome' => $_POST['nome'],
@@ -30,6 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     ]);
 
     header("Location: index.php");
+    exit;
 }
 ?>
 
