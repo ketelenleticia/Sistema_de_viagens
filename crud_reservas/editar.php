@@ -230,9 +230,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     Cancelada
                                 </option>
 
-                                <option value="Concluída" <?= ($reserva['status'] == 'Concluída') ? 'selected' : '' ?>>
-                                    Concluída
-                                </option>
 
                             </select>
                         </div>
