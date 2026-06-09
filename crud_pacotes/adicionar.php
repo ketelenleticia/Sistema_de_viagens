@@ -14,8 +14,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Salva no banco
     $sql = "INSERT INTO tabela_pacotes
-            (destino, descricao, preco, duracao, data_saida, imagem)
-            VALUES (?, ?, ?, ?, ?, ?)";
+            (destino, descricao, preco, duracao, data_saida)
+            VALUES (?, ?, ?, ?, ?)";
 
     $stmt = $conexao->prepare($sql);
 
