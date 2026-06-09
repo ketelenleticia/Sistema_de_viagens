@@ -7,25 +7,38 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = trim($_POST["email"]);
     $senha = trim($_POST["senha"]);
 
-    // Criptografa a senha
-    $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
+    // Verifica se o email já existe
+    $verifica = $conexao->prepare(
+        "SELECT email FROM tabela_login WHERE email = :email"
+    );
 
-    $stmt = $conexao->prepare("
-        INSERT INTO tabela_login (email, senha)
-        VALUES (:email, :senha)
-    ");
+    $verifica->execute([
+        ':email' => $email
+    ]);
 
-    $stmt->bindValue(':email', $email);
-    $stmt->bindValue(':senha', $senhaHash);
+    if ($verifica->fetch()) {
 
-    if ($stmt->execute()) {
-       
+        $erro = "Este email já está cadastrado.";
+
+    } else {
+
+        // Gera o hash da senha
+        $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
+
+        $stmt = $conexao->prepare("
+            INSERT INTO tabela_login (email, senha)
+            VALUES (:email, :senha)
+        ");
+
+        $stmt->execute([
+            ':email' => $email,
+            ':senha' => $senhaHash
+        ]);
+
         $_SESSION['sucesso'] = "Cadastro realizado com sucesso! Faça login.";
 
         header("Location: login.php");
         exit;
-    } else {
-       $erro = "Erro ao cadastrar.";
     }
 }
 ?>
