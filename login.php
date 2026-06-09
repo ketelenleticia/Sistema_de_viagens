@@ -1,28 +1,26 @@
 <?php
-session_start();
 require "conexao.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
     $email = trim($_POST["email"]);
     $senha = trim($_POST["senha"]);
 
-    
-    $stmt = $conexao->prepare("SELECT * FROM tabela_login WHERE email = :email");
+    // Gera o hash da senha
+    $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
+
+    $stmt = $conexao->prepare("
+        INSERT INTO tabela_login (email, senha)
+        VALUES (:email, :senha)
+    ");
+
     $stmt->bindValue(':email', $email);
-    $stmt->execute();
+    $stmt->bindValue(':senha', $senhaHash);
 
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-
-    if($user && password_verify($senha, $user['senha'])){
-
-     $_SESSION["email"] = $user["email"];
-
-        header("Location: index.php");
-        exit;
-
+    if ($stmt->execute()) {
+        echo "Usuário cadastrado com sucesso!";
     } else {
-        $erro = "Email ou senha incorretos.";
+        echo "Erro ao cadastrar usuário.";
     }
 }
 ?>
