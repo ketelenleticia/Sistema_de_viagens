@@ -110,7 +110,6 @@ $pacotes = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <thead class="bg-gray-50 border-b">
                         <tr>
                             <th class="p-4 text-left">ID</th>
-                            <th class="p-4 text-left">Imagem</th>
                             <th class="p-4 text-left">Destino</th>
                             <th class="p-4 text-left">Descrição</th>
                             <th class="p-4 text-left">Preço</th>
@@ -124,19 +123,7 @@ $pacotes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                         <?php foreach($pacotes as $dado): ?>
                         <tr class="border-b hover:bg-gray-50">
-
-                            <td class="p-4"><?= $dado['id_pacote'] ?></td>
-                            <!-- Imagem -->
-                            <td class="p-4">
-                                <?php if(!empty($dado['imagem'])): ?>
-                                <img src="../assets/<?= $dado['imagem'] ?>" alt="Imagem do pacote"
-                                    class="w-20 h-14 object-cover rounded-lg shadow">
-                                <?php else: ?>
-                                <span class="text-gray-400">
-                                    Sem imagem
-                                </span>
-                                <?php endif; ?>
-                            </td>
+                            <td class="p-4 font-semibold text-gray-800"><?= $dado['id_pacote'] ?>
                             <!-- Destino -->
                             <td class="p-4 font-semibold text-gray-800"><?= $dado['destino'] ?>
                             </td>

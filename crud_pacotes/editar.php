@@ -16,27 +16,15 @@ if (!$dado) {
     die("Registro não encontrado");
 }
 
-// imagem antiga
-$imagem = $dado['imagem'];
+
 
 // atualizar
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    // se enviou nova imagem
-    if (!empty($_FILES['imagem']['name'])) {
-
-        $imagem = $_FILES['imagem']['name'];
-
-        move_uploaded_file(
-            $_FILES['imagem']['tmp_name'],
-            "../assets/" . $imagem
-        );
-    }
 
     $stmt = $conexao->prepare("
         UPDATE tabela_pacotes 
         SET destino = :destino,
-            imagem = :imagem,
             descricao = :descricao,
             preco = :preco,
             duracao = :duracao,
@@ -46,7 +34,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $stmt->execute([
         ':destino' => $_POST['destino'],
-        ':imagem' => $imagem,
         ':descricao' => $_POST['descricao'],
         ':preco' => $_POST['preco'],
         ':duracao' => $_POST['duracao'],
@@ -196,25 +183,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 </div>
 
-                <!-- Imagem Atual -->
-                <?php if(!empty($dado['imagem'])): ?>
-                <div>
-                    <label class="block text-slate-700 font-semibold mb-2">
-                        Imagem Atual
-                    </label>
 
-                    <img src="../assets/<?= $dado['imagem'] ?>" class="w-48 h-32 object-cover rounded-xl">
-                </div>
-                <?php endif; ?>
-
-                <!-- Nova Imagem -->
-                <div>
-                    <label class="block text-slate-700 font-semibold mb-2">
-                        Alterar Imagem (opcional)
-                    </label>
-
-                    <input type="file" name="imagem" class="w-full border rounded-xl px-4 py-3 bg-white">
-                </div>
 
                 <!-- Botões -->
                 <div class="flex gap-4 pt-4">

@@ -1,7 +1,7 @@
 <?php
+
 require "../conexao.php";
 
-// Salvar novo pacote
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $destino = $_POST['destino'];
@@ -10,47 +10,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $duracao = $_POST['duracao'];
     $data_saida = $_POST['data_saida'];
 
-    // Verifica se enviou imagem
-    if (empty($_FILES['imagem']['name'])) {
-        die("Selecione uma imagem.");
-    }
-
-    $nomeOriginal = $_FILES['imagem']['name'];
-    $tmp = $_FILES['imagem']['tmp_name'];
-    $tamanho = $_FILES['imagem']['size'];
-
-    // Extensão
-    $ext = strtolower(pathinfo($nomeOriginal, PATHINFO_EXTENSION));
-
-    // Formatos permitidos
-    $permitidos = ['jpg', 'jpeg', 'png', 'webp'];
-
-    if (!in_array($ext, $permitidos)) {
-        die("Formato inválido. Use JPG, JPEG, PNG ou WEBP.");
-    }
-
-    // Limite 2MB
-    if ($tamanho > 2000000) {
-        die("Imagem muito grande. Máximo 2MB.");
-    }
-
-    // Nome único
-    $novoNome = time() . "_" . basename($nomeOriginal);
-
-    // Pasta destino
-    $pasta = "../assets/" . $novoNome;
-
-    // Upload
-    if (!move_uploaded_file($tmp, $pasta)) {
-        die("Erro ao enviar imagem.");
-    }
+    
 
     // Salva no banco
-    $stmt = $conexao->prepare("
-        INSERT INTO tabela_pacotes 
-        (destino, descricao, preco, duracao, data_saida, imagem)
-        VALUES (?, ?, ?, ?, ?, ?)
-    ");
+    $sql = "INSERT INTO tabela_pacotes
+            (destino, descricao, preco, duracao, data_saida, imagem)
+            VALUES (?, ?, ?, ?, ?, ?)";
+
+    $stmt = $conexao->prepare($sql);
 
     $stmt->execute([
         $destino,
@@ -58,12 +25,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $preco,
         $duracao,
         $data_saida,
-        $novoNome
     ]);
 
     header("Location: index.php");
     exit();
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -138,22 +105,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             </div>
 
-            <!-- Imagem -->
-            <div>
-                <label class="block font-semibold mb-2">
-                    Imagem do Pacote
-                </label>
 
-                <input type="file" name="imagem" accept=".jpg,.jpeg,.png,.webp" required
-                    class="w-full border rounded-xl p-3 bg-white">
-            </div>
-
-            <!-- Preview Info -->
-            <div class="bg-amber-100 border border-amber-200 rounded-2xl p-4">
-                <p class="text-sm text-amber-700">
-                    Formatos permitidos: JPG, JPEG, PNG, WEBP | Tamanho máximo: 2MB
-                </p>
-            </div>
 
             <!-- Botões -->
             <div class="flex gap-4 pt-4">
@@ -170,7 +122,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         </form>
 
-        
+
 
     </div>
 

@@ -28,7 +28,7 @@ $clientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <div>
                 <div class="p-6">
                     <h1 class="text-3xl font-bold text-white">Viagem<span class="text-amber-500">Tech</span></h1>
-                    <p class="text-sm text-white">sistema de Viagens</p>
+                    <p class="text-sm text-white">Sistema de Viagens</p>
                 </div>
 
                 <nav class="mt-6">
