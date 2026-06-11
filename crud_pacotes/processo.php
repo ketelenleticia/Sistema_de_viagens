@@ -15,11 +15,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->bindValue(':duracao', $duracao);
     $stmt->bindValue(':data_saida', $data_saida);
 
-    try {
-      $stmt->execute();
-      echo "Salvou com sucesso!";
-    } catch (PDOException $e) {
-      echo $e->getMessage();
+    if ($stmt->execute()) {
+    header("Location: index.php");
+    exit();
+    } else {
+    echo "Erro ao salvar";
     }
    
 }

@@ -10,7 +10,7 @@ if (!$id_cliente) {
 // buscar
 $stmt = $conexao->prepare("SELECT * FROM tabela_clientes WHERE id_cliente = :id_cliente");
 $stmt->execute([':id_cliente' => $id_cliente]);
-$dado = $stmt->fetch(PDO::FETCH_ASSOC);
+$dado = $stmt->fetch(PDO::FETCH_ASSOC);  //serve para pegar o resultado da consulta SQL e armazená-lo na variável $dado.
 
 if (!$dado) {
     die("Registro não encontrado");

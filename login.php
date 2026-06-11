@@ -1,9 +1,10 @@
 <?php
-session_start();
+session_start();   //iniciar a sessão para armazenar informações do usuário//
 require "conexao.php";
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+//variável global do PHP que informa qual método HTTP
 
+if ($_SERVER["REQUEST_METHOD"] == "POST") { 
     $email = trim($_POST["email"]);
     $senha = trim($_POST["senha"]);
 
@@ -16,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         ':email' => $email
     ]);
 
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC); 
 
     if ($user && password_verify($senha, $user['senha'])) {
 
@@ -79,7 +80,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
                 <?php endif; ?>
 
-                <!-- Erro PHP -->
+                <!-- Erro PHP //!empty() é  para verificar se um campo foi preenchido . -->
                 <?php if (!empty($erro)) : ?>
                 <div class="bg-amber-100 text-amber-600 border border-amber-300 rounded-lg p-3 mb-4">
                     <?php echo $erro; ?>

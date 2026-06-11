@@ -11,8 +11,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $verifica = $conexao->prepare(
         "SELECT email FROM tabela_login WHERE email = :email"
     );
-
-    $verifica->execute([
+//  O PHP procura esse email no banco.
+    $verifica->execute([       
         ':email' => $email
     ]);
 

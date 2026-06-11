@@ -13,18 +13,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
 
     // Salva no banco
-    $sql = "INSERT INTO tabela_pacotes
-            (destino, descricao, preco, duracao, data_saida)
-            VALUES (?, ?, ?, ?, ?)";
 
-    $stmt = $conexao->prepare($sql);
+    $stmt = $conexao->prepare("
+    INSERT INTO tabela_pacotes 
+    (destino, descricao, preco, duracao, data_saida) 
+    VALUES 
+    (:destino, :descricao, :preco, :duracao, :data_saida)
+    ");
 
     $stmt->execute([
-        $destino,
-        $descricao,
-        $preco,
-        $duracao,
-        $data_saida,
+    ':destino'   => $destino,
+    ':descricao' => $descricao,
+    ':preco'     => $preco,
+    ':duracao'   => $duracao,
+    ':data_saida'=> $data_saida
     ]);
 
     header("Location: index.php");

@@ -3,7 +3,9 @@ require "../conexao.php";
 
 $id_cliente = $_GET['id_cliente'] ?? null;
 
-if ($id_cliente) {
+
+
+if ($id_cliente) {  
 
     // Exclui as reservas do cliente
     $stmt = $conexao->prepare("DELETE FROM tabela_reservas WHERE cliente = :id_cliente");

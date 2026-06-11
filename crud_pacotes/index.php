@@ -124,11 +124,12 @@ $pacotes = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <?php foreach($pacotes as $dado): ?>
                         <tr class="border-b hover:bg-gray-50">
                             <td class="p-4 font-semibold text-gray-800"><?= $dado['id_pacote'] ?>
-                            <!-- Destino -->
+                                <!-- Destino -->
                             <td class="p-4 font-semibold text-gray-800"><?= $dado['destino'] ?>
                             </td>
                             <td class="p-4 text-gray-600 max-w-xs"><?= $dado['descricao'] ?>
                             </td>
+                            <!-- //O number_format() formata valores monetários. -->
                             <td class="p-4 font-bold text-blue-900">R$
                                 <?= number_format($dado['preco'], 2, ',', '.') ?>
                             </td>
